@@ -108,7 +108,7 @@ This script will:
 
 ---
 
-## 📂 Output
+## Output
 
 All channel data is stored in:
 
@@ -155,9 +155,8 @@ youtube_channels_database.csv
 
 ## Authors
 
-**\[Your Name]**
 GitHub: [@nikosgravos](https://github.com/nikosgravos)
-GitHub: [@VasilisVas1](https://github.com/VasilisVas1)
+[@VasilisVas1](https://github.com/VasilisVas1)
 Feel free to open issues or suggest improvements!
 
 ---
