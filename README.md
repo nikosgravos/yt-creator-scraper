@@ -42,7 +42,6 @@ This repository contains two Python scripts that together allow you to discover 
 
 ```bash
 git clone https://github.com/nikosgravos/yt-creator-scraper.git
-cd youtube-viewstats-scraper
 ```
 
 ### 2. Install Dependencies
@@ -60,7 +59,7 @@ webdriver-manager
 Create a `.env` file in the project root directory and add your API key:
 
 ```env
-YOUTUBE_API_KEY_BILL=your_youtube_api_key_here
+YOUTUBE_API_KEY=your_youtube_api_key_here
 ```
 
 You can obtain an API key from the [Google Developers Console](https://console.developers.google.com/).
