@@ -1,90 +1,167 @@
-# YouTube Channel Scraper and ViewStats Processor
+---
 
-## Overview
+# YouTube Channel Scraper with ViewStats
 
-This project consists of two main scripts for YouTube channel research:
+This repository contains two Python scripts that together allow you to discover YouTube channels in any niche and enrich them with public analytics from ViewStats:
 
-1. **YouTube Channel Scraper**: Searches for YouTube channels by niche/keyword and collects channel statistics using the YouTube API.
-2. **ViewStats Processor**: Enhances the collected data by scraping additional metrics from ViewStats.com.
+* `youtube_scraper.py`: Scrapes YouTube channels using the YouTube Data API v3 based on search keywords and filters.
+* `viewstats_scraper.py`: Uses Selenium to fetch additional analytics like views, revenue, and subscriber growth from [ViewStats.com](https://www.viewstats.com).
 
-## Requirements
+---
 
-- Python 3.7+
-- Google Cloud Platform account with YouTube Data API v3 enabled
-- Required Python packages
+## Features
 
-## Setup Instructions
+### YouTube Scraper (`youtube_scraper.py`)
 
-1. **YouTube API Key**:
-   - Create a project in Google Cloud Console
-   - Enable the YouTube Data API v3
-   - Create an API key
-   - Save the key in a `.env` file as `YOUTUBE_API_KEY=your_api_key_here`
+* Search for YouTube channels using niche-specific keywords.
+* Filter channels by:
 
-2. **Environment Setup**:
-   ```
-   pip install pandas python-dotenv google-api-python-client selenium webdriver-manager
-   ```
+  * Subscriber count range
+  * Country code (optional)
+* Prevents duplicates by checking usernames and URLs.
+* Appends new search keywords to existing entries' niche field.
+* Tracks:
 
-## YouTube Channel Scraper Usage
+  * API quota usage
+  * Number of API calls
+  * Skipped reasons (e.g., wrong country, subs out of range)
 
-### How It Works
+### ViewStats Scraper (`viewstats_scraper.py`)
 
-1. The script searches YouTube for channels matching your specified niche/keyword
-2. It collects:
-   - Channel name and URL
-   - Subscriber count
-   - Total views
-   - Video count
-   - Country
-   - Channel image URL
-3. Results are saved to a CSV database (`youtube_channels_database.csv`)
+* Enriches channel data with:
 
-### Running the Scraper
+  * Views from the last 28 days
+  * Subscribers gained in the last 28 days
+  * Estimated revenue
+  * Long vs short views breakdown
+* Uses `selenium` and `webdriver-manager` to automate Chrome.
+* Detects and skips unavailable or untracked channels.
 
-1. Execute the script: `python youtube_scraper.py`
-2. When prompted, enter:
-   - Your target niche/keyword (e.g., "fashion", "gaming")
-   - Minimum and maximum subscriber count range
-   - Optional country filter (2-letter country code)
-   - Number of new creators to find
-3. The script will display progress and save results
+---
 
-## ViewStats Processor Usage
+## Setup
 
-### How It Works
+### 1. Clone the Repository
 
-1. The script checks the database for channels missing ViewStats data
-2. For each channel, it:
-   - Attempts to find the channel on ViewStats.com
-   - Scrapes additional metrics:
-     - Views in last 28 days
-     - Subscribers gained in last 28 days
-     - Estimated revenue
-     - Long vs. short view percentages
-3. Updates the database with the collected information
+```bash
+git clone https://github.com/nikosgravos/yt-creator-scraper.git
+cd youtube-viewstats-scraper
+```
 
-### Running the Processor
+### 2. Install Dependencies
 
-1. Execute the script: `python viewstats_processor.py`
-2. Confirm you want to process missing ViewStats data
-3. The script will automatically:
-   - Launch a Chrome browser (visible by default)
-   - Process each channel one by one
-   - Save progress every 10 records
-4. Results are saved back to the same CSV file
+```txt
+pandas
+google-api-python-client
+python-dotenv
+selenium
+webdriver-manager
+```
 
-## Important Notes
+### 3. Add YouTube API Key
 
-- The YouTube API has quota limits (approx. 10,000 units/day)
-- ViewStats scraping requires manual browser interaction if CAPTCHAs appear
-- For large datasets, consider running the ViewStats processor in batches
-- The database CSV will be created automatically on first run
+Create a `.env` file in the project root directory and add your API key:
 
-## Output File
+```env
+YOUTUBE_API_KEY_BILL=your_youtube_api_key_here
+```
 
-All data is saved to `youtube_channels_database.csv` with these columns:
+You can obtain an API key from the [Google Developers Console](https://console.developers.google.com/).
 
-- Basic YouTube data: Username, Subscribers, Total Views, etc.
-- ViewStats data: 28-day metrics, revenue estimates, view types
-- Channel URLs and search niches
+---
+
+## How to Use
+
+### 1. Scrape YouTube Channels
+
+Run:
+
+```bash
+python youtube_scraper.py
+```
+
+You'll be prompted to enter:
+
+* A niche keyword (e.g., `fitness`, `gaming`, `finance`)
+* Minimum and maximum subscriber count
+* Country filter (2-letter country code like `US`, optional)
+* Number of new channels to discover
+
+The script will:
+
+* Use the YouTube API to find and filter matching channels
+* Save the results to a CSV database (`youtube_channels_database.csv`)
+* Update existing entries with new niche keywords if needed
+
+### 2. Enrich with ViewStats Data
+
+Run:
+
+```bash
+python viewstats_scraper.py
+```
+
+This script will:
+
+* Open Chrome using Selenium
+* Navigate to each channel's ViewStats page (if available)
+* Scrape views, subs, revenue, and content type breakdown
+* Save the updated results back to `youtube_channels_database.csv`
+
+> By default, the browser is visible. To run in headless mode, uncomment the `--headless` line in `viewstats_scraper.py`.
+
+---
+
+## 📂 Output
+
+All channel data is stored in:
+
+```
+youtube_channels_database.csv
+```
+
+### Columns
+
+* `Username`
+* `Subscribers`
+* `Total Views`
+* `Video Count`
+* `Avg Views Per Video`
+* `Country`
+* `Channel URL`
+* `Search Niche`
+* `Channel_Image_URL`
+* `ViewStats_Profile_URL`
+* `Views_Last_28_Days`
+* `Subs_Last_28_Days`
+* `Estimated_Rev_Last_28_Days`
+* `Long_Views`
+* `Short_Views`
+
+---
+
+## Tips
+
+* API quota usage is tracked and estimated before scraping starts.
+* If a channel already exists, its niche will be updated rather than duplicated.
+* ViewStats scraping includes retry logic and skips untrackable or broken pages.
+* Delay and throttling are included to avoid bans during scraping.
+
+---
+
+## Warnings
+
+* Ensure you comply with YouTube and ViewStats terms of service before using this tool.
+* Avoid excessive automated requests to prevent IP bans or quota suspensions.
+* Always use your own API key.
+
+---
+
+## Authors
+
+**\[Your Name]**
+GitHub: [@yourusername](https://github.com/nikosgravos)
+GitHub: [@yourusername](https://github.com/VasilisVas1)
+Feel free to open issues or suggest improvements!
+
+---
