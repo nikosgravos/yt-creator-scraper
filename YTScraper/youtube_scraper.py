@@ -10,7 +10,7 @@ import os
 load_dotenv()
 
 # Get API keys
-API_KEY = os.getenv('YOUTUBE_API_KEY_SAM')  # General API key variable name
+API_KEY = os.getenv('YOUTUBE_API_KEY')  # General API key variable name
 YOUTUBE_API = build('youtube', 'v3', developerKey=API_KEY)
 
 # Database CSV filename
