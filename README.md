@@ -1,4 +1,3 @@
----
 
 # YouTube Channel Scraper with ViewStats
 
@@ -6,8 +5,6 @@ This repository contains two Python scripts that together allow you to discover 
 
 * `youtube_scraper.py`: Scrapes YouTube channels using the YouTube Data API v3 based on search keywords and filters.
 * `viewstats_scraper.py`: Uses Selenium to fetch additional analytics like views, revenue, and subscriber growth from [ViewStats.com](https://www.viewstats.com).
-
----
 
 ## Features
 
