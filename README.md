@@ -11,7 +11,7 @@ This project consists of two main scripts for YouTube channel research:
 
 - Python 3.7+
 - Google Cloud Platform account with YouTube Data API v3 enabled
-- Required Python packages (install via `pip install -r requirements.txt`)
+- Required Python packages
 
 ## Setup Instructions
 
