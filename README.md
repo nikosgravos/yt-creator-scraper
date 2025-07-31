@@ -157,8 +157,8 @@ youtube_channels_database.csv
 ## Authors
 
 **\[Your Name]**
-GitHub: [@yourusername](https://github.com/nikosgravos)
-GitHub: [@yourusername](https://github.com/VasilisVas1)
+GitHub: [@nikosgravos](https://github.com/nikosgravos)
+GitHub: [@VasilisVas1](https://github.com/VasilisVas1)
 Feel free to open issues or suggest improvements!
 
 ---
